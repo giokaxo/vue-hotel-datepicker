@@ -3,7 +3,7 @@ export default {
     var now = new Date(referenceDate);
     var closest = Infinity;
 
-    datesArray.forEach(function (d) {
+    datesArray.forEach(function(d) {
       var date = new Date(d);
       if (date >= now && date < closest) {
         closest = d;
@@ -22,9 +22,9 @@ export default {
     const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     let referenceDateDay = referenceDate.getDay();
 
-    for (var i = 7; i--;) {
+    for (var i = 7; i--; ) {
       if (weekDay === days[i]) {
-        weekDay = (i <= referenceDateDay) ? (i + 7) : i;
+        weekDay = i <= referenceDateDay ? i + 7 : i;
         break;
       }
     }
@@ -48,7 +48,7 @@ export default {
     const firstDate = new Date(start);
     const secondDate = new Date(end);
 
-    return Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)));
+    return Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / oneDay));
   },
   addDays(date, quantity) {
     let result = new Date(date);
@@ -56,23 +56,15 @@ export default {
     return result;
   },
   getFirstDay(date, firstDayOfWeek) {
-    var firstDay =  this.getFirstDayOfMonth(date);
+    var firstDay = this.getFirstDayOfMonth(date);
     var offset = 0;
     if (firstDayOfWeek > 0) {
       offset = firstDay.getDay() === 0 ? -7 + firstDayOfWeek : firstDayOfWeek;
     }
-    return new Date(
-      firstDay.setDate(
-        firstDay.getDate()
-        - (firstDay.getDay() - offset)
-      )
-    );
+    return new Date(firstDay.setDate(firstDay.getDate() - (firstDay.getDay() - offset)));
   },
   getFirstDayOfMonth(date) {
-    return new Date(
-      date.getFullYear(),
-      date.getMonth(), 1
-    );
+    return new Date(date.getFullYear(), date.getMonth(), 1);
   },
   getNextMonth(date) {
     let nextMonth;
@@ -91,20 +83,16 @@ export default {
 
       // If wrapper has vertical scroll
       if (swiperWrapper.scrollHeight > swiperWrapper.clientHeight) {
-        if (swiperWrapper.scrollTop === (swiperWrapper.scrollHeight - swiperWrapper.offsetHeight)) {
+        if (swiperWrapper.scrollTop === swiperWrapper.scrollHeight - swiperWrapper.offsetHeight) {
           this.renderNextMonth();
-        }
-        else if (swiperWrapper.scrollTop === 0) {
+        } else if (swiperWrapper.scrollTop === 0) {
           this.renderPreviousMonth();
-        }
-        else {
+        } else {
           return;
         }
-      }
-      else if (direction == 'up') {
+      } else if (direction == 'up') {
         this.renderNextMonth();
-      }
-      else if (direction == 'down') {
+      } else if (direction == 'down') {
         this.renderPreviousMonth();
       }
     }
@@ -121,7 +109,7 @@ export default {
     const d2Y = d2.getFullYear();
     const d1M = d1.getMonth();
     const d2M = d2.getMonth();
-    return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
+    return d2M + 12 * d2Y - (d1M + 12 * d1Y);
   },
   handleTouchMove(evt) {
     if (!this.xDown || !this.yDown) {

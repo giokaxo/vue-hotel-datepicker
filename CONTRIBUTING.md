@@ -2,7 +2,7 @@
 We love pull requests from everyone. By participating in this project, you
 agree to abide by the [code of conduct].
 
-[code of conduct]: https://github.com/krystalcampioni/vue-hotel-datepicker/blob/master/CODE_OF_CONDUCT.md
+[code of conduct]: https://github.com/giokaxo/vue-hotel-datepicker/blob/master/CODE_OF_CONDUCT.md
 
 * Fork, then clone the repo:
 ```
