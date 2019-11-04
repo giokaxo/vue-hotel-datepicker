@@ -1,12 +1,13 @@
-<template lang="pug">
-  .datepicker__input(
+<template>
+  <div
+    class="datepicker__input"
     @click="toggleDatepicker"
     @keyup.enter.stop.prevent="toggleDatepicker"
-    data-qa='datepickerInput'
+    data-qa="datepickerInput"
     :class="inputClass"
     v-text="inputDate ? inputDate : i18n[inputDateType]"
     :tabindex="tabIndex"
-  )
+  ></div>
 </template>
 
 <script>
