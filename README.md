@@ -42,6 +42,13 @@ export default {
 
 ## Props/Options
 
+### persistent
+
+- Type: `Boolean`
+- Default: `false`
+
+Hide labels and make picker always visible.
+
 ### format
 
 - Type: `String`
