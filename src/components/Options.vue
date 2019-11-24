@@ -4,6 +4,18 @@
   h2 Options/Props
   .box
     Info(
+      valueName="persistent"
+      description="Hide labels and make datepicker persistent"
+      type="Boolean"
+      defaultVal="false"
+    )
+    .wrapper__350
+      HotelDatePicker(:persistent="true")
+    .wrapper__main
+      Snippet(inlineCode='<HotelDatePicker :persistent="true">\n</HotelDatePicker>')
+
+  .box
+    Info(
       valueName="format"
       description="The input date format string"
       type="String"
@@ -128,7 +140,7 @@
 </template>
 
 <script>
-import HotelDatePicker from 'vue-hotel-datepicker';
+import HotelDatePicker from '@giokaxo/vue-hotel-datepicker';
 import Snippet from './Snippet';
 import Info from './Info';
 

@@ -1,6 +1,6 @@
 <template lang="pug">
 #app
-    a(href="https://github.com/krystalcampioni/vue-hotel-datepicker", target="_blank")
+    a(href="https://github.com/giokaxo/vue-hotel-datepicker", target="_blank")
       img(style="position: absolute; top: 0; right: 0; border: 0;", src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67", alt="Fork me on GitHub", data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png")
     header.header
       .grid
@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style lang="scss">
-  $main-color: #15bebf;
+  $main-color: #fbd13b;
 
   .datepicker__month-name {
     width: 100%;
@@ -74,7 +74,7 @@ export default {
     font-family: sans-serif;
   }
 
-  hr { border: 0.5px dashed #17bdbf; }
+  hr { border: 0.5px dashed $main-color; }
 
   h1, h2 { display: inline-block; }
 
@@ -84,13 +84,13 @@ export default {
 
   h2 {
     font-weight: bold;
-    color: #387e90;
+    color: $main-color;
     margin-top: 40px;
   }
 
   h3 {
     font-weight: bold;
-    color: #3cc5c7;
+    color: $main-color;
     padding-bottom: 10px;
     margin-bottom: 0;
 
@@ -124,7 +124,7 @@ export default {
   h3 span { padding-left: 10px; }
 
   a {
-    color: #15bebf;
+    color: darken($main-color, 15);
     text-decoration: none;
 
     &:hover {
@@ -138,7 +138,7 @@ export default {
   }
 
   .header {
-    background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+    background: linear-gradient(141deg, $main-color 0%, darken($main-color, 10) 51%, darken($main-color, 18) 75%);
     color: #fff;
     padding: 20px;
     width: 100%;

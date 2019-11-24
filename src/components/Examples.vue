@@ -44,7 +44,7 @@
 
 <script>
 
-import HotelDatePicker from 'vue-hotel-datepicker';
+import HotelDatePicker from '@giokaxo/vue-hotel-datepicker';
 import Snippet from './Snippet';
 import Info from './Info';
 

@@ -46,7 +46,7 @@ export default {
 <style lang="scss">
 .navigation {
   &__list{
-    color: #2db4e8;
+    color: #fbd13b;
   }
 
   &__list li:hover .navigation__sublist {
@@ -64,7 +64,7 @@ export default {
     .navigation__item {
       padding: 10px 0 0;
 
-      a { color: #2db4e8}
+      a { color: #fbd13b}
     }
 
   }

@@ -1,5 +1,5 @@
 ```
-import HotelDatePicker from 'vue-hotel-datepicker'
+import HotelDatePicker from '@giokaxo/vue-hotel-datepicker'
 
 export default {
   components: {
