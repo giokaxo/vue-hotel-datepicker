@@ -2,6 +2,10 @@
   <div id="app" style="text-align: left; padding: 10vw">
     <div>
       <div class="box">
+        <h3>Hide inputs and make datepicker persistent</h3>
+        <DatePicker :persistent="true" />
+      </div>
+      <div class="box">
         <h3>Allow check-in and check-out on the same day</h3>
         <DatePicker :minNights="0" />
       </div>

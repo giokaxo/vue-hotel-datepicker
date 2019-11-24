@@ -1,12 +1,14 @@
 <template>
   <div
     class="datepicker__wrapper"
+    :class="{ 'datepicker__wrapper--always-open': persistent }"
     v-if="show"
     v-on-click-outside="clickOutside"
     @blur="clickOutside"
   >
-    <div class="datepicker__close-button -hide-on-desktop" v-if="isOpen" @click="hideDatepicker">＋</div>
+    <div class="datepicker__close-button -hide-on-desktop" v-if="!persistent && isOpen" @click="hideDatepicker">＋</div>
     <div
+      v-if="!persistent"
       class="datepicker__dummy-wrapper"
       :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}` "
     >
@@ -36,7 +38,7 @@
       class="datepicker__clear-button"
       tabindex="0"
       @click="clearSelection"
-      v-if="showClearSelectionButton"
+      v-if="!persistent && showClearSelectionButton"
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 68">
         <path d="M6.5 6.5l55 55M61.5 6.5l-55 55" />
@@ -44,12 +46,12 @@
     </div>
     <div
       class="datepicker"
-      :class="`${ isOpen ? 'datepicker--open' : 'datepicker--closed' }`"
+      :class="`${ isOpen ? 'datepicker--open' : 'datepicker--closed' }${ persistent ? ' datepicker--always-open' : ''}`"
     >
       <div class="-hide-on-desktop">
         <div
           class="datepicker__dummy-wrapper datepicker__dummy-wrapper--no-border"
-          @click="toggleDatepicker"
+          @click="!persistent && toggleDatepicker()"
           :class="`${isOpen ? 'datepicker__dummy-wrapper--is-active' : ''}`"
           v-if="isOpen"
         >
@@ -84,7 +86,7 @@
             :tabindex="isOpen ? 0 : -1"
           ></span>
         </div>
-        <div class="datepicker__months" v-if="screenSize == 'desktop'">
+        <div class="datepicker__months" v-if="screenSize == 'desktop'" :class="{ 'datepicker__months--no-border': persistent }">
           <div class="datepicker__month" v-for="n in [0,1]" v-bind:key="n">
             <p
               class="datepicker__month-name"
@@ -99,7 +101,7 @@
             </div>
             <div
               class="square"
-              v-for="day in months[activeMonthIndex+n].days"
+              v-for="day in months[activeMonthIndex + n].days"
               @mouseover="hoveringDate = day.date"
             >
               <Day
@@ -122,15 +124,15 @@
           </div>
         </div>
         <div v-if="screenSize !== 'desktop' && isOpen">
-          <div class="datepicker__week-row">
+          <div class="datepicker__week-row" :class="{ 'datepicker__week-row--always-open' : persistent}">
             <div
               class="datepicker__week-name"
               v-for="dayName in this.i18n['day-names']"
               v-text="dayName"
             ></div>
           </div>
-          <div class="datepicker__months" id="swiperWrapper">
-            <div class="datepicker__month" v-for="(a, n) in months" v-bind:key="n">
+          <div class="datepicker__months" :class="{ 'datepicker__months--no-border': persistent }" id="swiperWrapper">
+            <div class="datepicker__month" :class="{ 'datepicker__month--always-open': persistent }" v-for="(a, n) in months" v-bind:key="n">
               <p class="datepicker__month-name" v-text="getMonth(months[n].days[15].date)"></p>
               <div class="datepicker__week-row -hide-up-to-tablet">
                 <div
@@ -302,6 +304,10 @@ export default {
     displayClearButton: {
       default: true,
       type: Boolean
+    },
+    persistent: {
+      default: false,
+      type: Boolean,
     }
   },
 
@@ -333,6 +339,12 @@ export default {
   },
 
   watch: {
+    persistent: {
+      immediate: true,
+      handler(val) {
+        this.isOpen = val;
+      }
+    },
     isOpen(value) {
       if (this.screenSize !== 'desktop') {
         const bodyClassList = document.querySelector('body').classList;
@@ -360,7 +372,9 @@ export default {
         this.show = true;
         this.parseDisabledDates();
         this.reRender();
-        this.isOpen = false;
+        if(!this.persistent) {
+          this.isOpen = false;
+        }
       }
 
       this.$emit('check-out-changed', newDate);
@@ -442,7 +456,7 @@ export default {
     },
 
     clickOutside() {
-      if (this.closeDatepickerOnClickOutside) {
+      if (!this.persistent && this.closeDatepickerOnClickOutside) {
         this.hideDatepicker();
       }
     },
@@ -683,6 +697,12 @@ $extra-small-screen: "(max-width: 23em)";
   position: absolute;
   z-index: 999;
 
+  &--always-open {
+    position: relative;
+    left: unset;
+    top: unset;
+  }
+
   button.next--mobile {
     background: none;
     border: 1px solid $light-gray;
@@ -733,6 +753,17 @@ $extra-small-screen: "(max-width: 23em)";
       top: 0;
       width: 100%;
     }
+
+  }
+
+  &--always-open {
+    @include device($up-to-tablet) {
+      position: relative;
+      top: unset;
+      left: unset;
+      right: unset;
+      bottom: unset;
+    }
   }
 
   &__wrapper {
@@ -742,6 +773,10 @@ $extra-small-screen: "(max-width: 23em)";
     height: 48px;
     background: $white url("calendar_icon.regular.svg") no-repeat 17px center /
       16px;
+
+    &--always-open {
+      height: auto;
+    }
   }
 
   &__input {
@@ -809,18 +844,23 @@ $extra-small-screen: "(max-width: 23em)";
     &--is-active {
       color: $primary-color;
     }
+
     &--is-active::placeholder {
       color: $primary-color;
     }
+
     &--is-active::-moz-placeholder {
       color: $primary-color;
     }
+
     &--is-active:-ms-input-placeholder {
       color: $primary-color;
     }
+
     &--is-active:-moz-placeholder {
       color: $primary-color;
     }
+    
     &--single-date:first-child {
       width: 100%;
       background: none;
@@ -975,6 +1015,16 @@ $extra-small-screen: "(max-width: 23em)";
         display: none;
       }
     }
+
+    &--no-border {
+      margin-top: 0;
+      position: relative;
+
+      &::before {
+        content: unset !important;
+      }
+    }
+
   }
 
   &__month {
@@ -983,10 +1033,15 @@ $extra-small-screen: "(max-width: 23em)";
     width: 50%;
     padding-right: 10px;
 
+
     @include device($up-to-tablet) {
       width: 100%;
       padding-right: 0;
       padding-top: 60px;
+
+      &--always-open {
+        padding-top: 40px;
+      }
 
       &:last-of-type {
         margin-bottom: 65px;
@@ -1038,6 +1093,12 @@ $extra-small-screen: "(max-width: 23em)";
       top: 65px;
       position: absolute;
       width: 100%;
+
+      &--always-open {
+        margin-top: 20px;
+        position: relative;
+        top: unset;
+      }
     }
   }
 
@@ -1068,17 +1129,16 @@ $extra-small-screen: "(max-width: 23em)";
   }
 
   &__clear-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     appearance: none;
     background: transparent;
     border: 0;
     cursor: pointer;
     font-size: 25px;
     font-weight: bold;
-    height: 40px;
-    margin-bottom: 0;
-    margin-left: 0;
-    margin-right: -2px;
-    margin-top: 4px;
+    height: 100%;
     padding: 0;
     position: absolute;
     right: 0;
@@ -1104,7 +1164,7 @@ $extra-small-screen: "(max-width: 23em)";
     border-radius: 2px;
     color: $white;
     font-size: 11px;
-    margin-left: 5px;
+    margin-left: -8px;
     margin-top: -22px;
     padding: 5px 10px;
     position: absolute;
